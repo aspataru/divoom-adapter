@@ -8,11 +8,13 @@ TPG_VRDO_URL = 'http://www.tpg.ch/horaires/temps-reels?p_p_id=TempsReel_WAR_Temp
                '_TempsReel_WAR_TempsReelportlet_ligne=8&_TempsReel_WAR_TempsReelportlet_arret=VRDO'
 
 
-def next_VRDO_depart():
+def next_depart():
     r = requests.get(TPG_VRDO_URL)
     soup = BeautifulSoup(r.content, 'html.parser')
-    times = soup.find('span', 'tempsreel_thermo_time tempsreel_time').text
-    return times
+    times_elem = soup.find('span', 'tempsreel_thermo_time tempsreel_time')
+    if times_elem is not None:
+        return times_elem.text
+    return None
 
 
-print(next_VRDO_depart())
+print(next_depart())
